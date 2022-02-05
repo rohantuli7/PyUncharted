@@ -12,27 +12,25 @@ The application developed is a game in all senses. It contains 8 levels and each
 
 ## Game and classes description 
 An overall of 8 levels are created to depict the working of the game. Each of these 8 levels have a unique obstacles and challenges. Appropriate error handling has been implemented for every class in the program. The following levels were created in the game:
-1.	Museum
-•	In this level, the user will enter the Museum and a map will be displayed. The map will contain items at each corner which needs to be checked and if required, stolen. Note: only two items can be stolen from the museum.
-•	The user is required to move around the map to check the items and steal the items if they match the description mentioned in the objective.
-•	An artifact node can only be visited once.
-•	Class Museum is used simulate the above-mentioned activities. An image of the museum map is shown with labels around it providing the user with instructions. Buttons to show directions are also provided.
-•	Difficulties: structure was not turning out the way it was intended.
 
-2.	Home
-  * After stealing the items from the museum, the user will return back home and go through each of the items.
-  * While checking the map, current possible locations are displayed and the user needs to choose whether they are correct.
-  * Failure to choose the correct location will lead to restarting the level. 
-  * Class Home is used simulate the above-mentioned activities. Items previous stolen by the user are used in this level. 
-  * Images of destinations are shown the user is required to choose the correct one by clicking on the radio button. 
-  * Difficulties: resizing and reshaping images cannot be done directly by tkinter and an extra module (PIL) is required.
+### 1.	Museum
+* In this level, the user will enter the Museum and a map will be displayed. The map will contain items at each corner which needs to be checked and if required, stolen. Note: only two items can be stolen from the museum.
+* The user is required to move around the map to check the items and steal the items if they match the description mentioned in the objective.
+* An artifact node can only be visited once.
+* Class Museum is used simulate the above-mentioned activities. An image of the museum map is shown with labels around it providing the user with instructions. Buttons to show directions are also provided.
+
+### 2.	Home
+* After stealing the items from the museum, the user will return back home and go through each of the items.
+* While checking the map, current possible locations are displayed and the user needs to choose whether they are correct.
+* Failure to choose the correct location will lead to restarting the level. 
+* Class Home is used simulate the above-mentioned activities. Items previous stolen by the user are used in this level. 
+* Images of destinations are shown the user is required to choose the correct one by clicking on the radio button. 
 
 3.	Market
-•	After deciding the location, the user will need to buy a few items with respect to 3 sets of conditions observed in the region.
-•	For purchasing items in this level, the user has only been allotted 100$.
-•	With respect to each of the conditions, a set of items will be displayed and the user is required to choose the most appropriate ones while not exceeding the money allotted for this task.
-•	Class Market is used simulate the above-mentioned activities. Items and prices for respective conditions are shown in the form of check boxes where in only the correct sum of values will lead to the next level
-•	Difficulties: tkinter does not automatically provide a method for selection of n checkboxes out of a set checkboxes.
+* After deciding the location, the user will need to buy a few items with respect to 3 sets of conditions observed in the region.
+* For purchasing items in this level, the user has only been allotted 100$.
+* With respect to each of the conditions, a set of items will be displayed and the user is required to choose the most appropriate ones while not exceeding the money allotted for this task.
+* Class Market is used simulate the above-mentioned activities. Items and prices for respective conditions are shown in the form of check boxes where in only the correct sum of values will lead to the next level
 
 4.	Jungle without obstacles
 •	The expedition begins with the user reaching the location previously discovered and entering the jungle.
