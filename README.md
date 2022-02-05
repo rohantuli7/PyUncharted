@@ -20,12 +20,12 @@ An overall of 8 levels are created to depict the working of the game. Each of th
 •	Difficulties: structure was not turning out the way it was intended.
 
 2.	Home
-* After stealing the items from the museum, the user will return back home and go through each of the items.
-* While checking the map, current possible locations are displayed and the user needs to choose whether they are correct.
-* Failure to choose the correct location will lead to restarting the level. 
-* Class Home is used simulate the above-mentioned activities. Items previous stolen by the user are used in this level. 
-* Images of destinations are shown the user is required to choose the correct one by clicking on the radio button. 
-* Difficulties: resizing and reshaping images cannot be done directly by tkinter and an extra module (PIL) is required.
+  * After stealing the items from the museum, the user will return back home and go through each of the items.
+  * While checking the map, current possible locations are displayed and the user needs to choose whether they are correct.
+  * Failure to choose the correct location will lead to restarting the level. 
+  * Class Home is used simulate the above-mentioned activities. Items previous stolen by the user are used in this level. 
+  * Images of destinations are shown the user is required to choose the correct one by clicking on the radio button. 
+  * Difficulties: resizing and reshaping images cannot be done directly by tkinter and an extra module (PIL) is required.
 
 3.	Market
 •	After deciding the location, the user will need to buy a few items with respect to 3 sets of conditions observed in the region.
