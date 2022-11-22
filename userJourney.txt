@@ -1,8 +1,82 @@
-
+Okay
+east
+east
+yes
+south
+south
+west
+west
+west
+west
+yes
+Okay
+Okay
+Nepal
+Confirm items
+Mountain climbing boots
+Windcheater
+Confirm items
+Knife
+Pistol (with 5 bullets)
+Confirm items
+Rope
+Ladder
+Okay
+south
+east
+east
 north
 east
 east
 east
+south
+south
+south
+south
+south
+Okay
+Fight the bear!
+Shoot the bear!
+Shoot the bear!
+Shoot the bear!
+Shoot the bear!
+Shoot the bear!
+Stab the snake with the knife
+Run from the hyenas!
+Okay
+east
+east
+east
+east
+south
+south
+west
+west
+west
+south
+east
+east
+east
+east
+south
+south
+Okay
+Unlit torch
+east
+east
+west
+west
+west
+west
+yes
+north
+north
+yes
+south
+Okay
+east
+east
+east
 east
 south
 south
@@ -10,3 +84,5 @@ east
 south
 south
 south
+Burn the map
+Byzantine coin

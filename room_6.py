@@ -4,8 +4,6 @@
     Class Cave is created to simulate the interiors of a cave.
     The user is required to towards the end of the cave while
     they will be subjected to a number of obstacles.
-
-    SciView required to complete this level.
 """
 import tkinter as tk
 import matplotlib
@@ -15,14 +13,15 @@ import matplotlib.pyplot as plt
 class Cave():
     def __init__(self, map, startPoint, mapDesc, colorMap):
         """
-            Initialises the JungleWithoutObstacles.
-            This class inherits the Mapping class
-            and uses its functions for various tasks.
-            The parameters are passed to the superclass
+            Creation of a class to simulate the traversal
+            inside the cave
         :param map: map of the jungle
         :param startPoint: starting point on the map
         :param mapDesc: color description of the map
+        :param colorMap: matplotlib color
         """
+
+        # initialisation of required variables
         self.journey = ""
         self.Map = map
         self.path = startPoint
@@ -36,21 +35,23 @@ class Cave():
 
         self.levelComplete = False
 
+        # initialising the tkinter GUI
         self.win = tk.Tk()
         self.win.title("Uncharted")
         self.win.geometry("1000x1000")
         self.win.resizable(False, False)
 
-        tk.Button(self.win, text="Quit", command=self.win.destroy, bg='#567', fg='White').grid(row=0, column=0)
+        # initialising and placing widgets on the frame
+        tk.Button(self.win, text="Quit", command=self.win.destroy).grid(row=0, column=0)
 
         self.loadMap()
 
-        self.location = tk.Label(self.win, text = self.displayLocation(), bg='black', fg='White')
+        self.location = tk.Label(self.win, text = self.displayLocation())
         self.location.grid(row = 1, column = 2)
         self.objective = tk.Label(self.win, text=self.displayObjective())
         self.objective.grid(row=2, column=2)
 
-        self.printMessage = tk.Label(self.win, text = "",fg='red')
+        self.printMessage = tk.Label(self.win, text = "")
         self.printMessage.grid(row = 4, column = 2)
         self.direction_()
         self.tkPath = tk.Label(self.win, text=f"Currently at position : {self.path}")
@@ -61,12 +62,20 @@ class Cave():
 
 
     def direction_(self):
-        tk.Button(self.win, text='North', bg='#567', fg='White', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["north"])], "north")).grid(row = 4, column = 6)
-        tk.Button(self.win, text = 'East', bg='#567', fg='White', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["east"])], "east")).grid(row = 5, column = 6)
-        tk.Button(self.win, text='South', bg='#567', fg='White', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["south"])], "south")).grid(row = 6, column = 6)
-        tk.Button(self.win, text='West', bg='#567', fg='White', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["west"])], "west")).grid(row = 7, column = 6)
+        """
+            Function linking direction buttons on screen to the traversal logic
+        :return: None
+        """
+        tk.Button(self.win, text='North', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["north"])], "north")).grid(row = 4, column = 6)
+        tk.Button(self.win, text = 'East', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["east"])], "east")).grid(row = 5, column = 6)
+        tk.Button(self.win, text='South', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["south"])], "south")).grid(row = 6, column = 6)
+        tk.Button(self.win, text='West', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["west"])], "west")).grid(row = 7, column = 6)
 
     def loadMap(self):
+        """
+            Function for storing and loading the map after every move
+        :return:
+        """
         plt.imshow(self.Map, cmap=self.colorMap)
         plt.axis("off")
         plt.savefig("game_images/map1.png")
@@ -75,7 +84,15 @@ class Cave():
         self.imgLabel.grid(row=3, column=1, columnspan=3)
 
     def isPathExist(self, tempPath, text):
+        """
+            Function for checking if path exits
+        :param tempPath: temporary path entered by the user
+        :param text: button clicked
+        :return: None
+        """
         self.journey = f"{self.journey}\n{text}"
+
+        # checking conditions whether the path entered lies in the overall map
         if (tempPath[0] < 0 or tempPath[0] > 9) or (tempPath[1] < 0 or tempPath[1] > 9):
             self.printMessage.configure(text = "INCORRECT PATH ENTERED. RETRY!")
         elif (self.Map[tempPath[0]][tempPath[1]] == 1):
@@ -132,7 +149,15 @@ class Cave():
         return "Chapter 6 (Location : Cave)"
 
     def checkLevel(self):
+        """
+            function to check if level is complete
+        :return: True if complete else False
+        """
         return self.levelComplete
 
     def returnJourney(self):
+        """
+            Returning the user journey for this level
+        :return: user journey for this level
+        """
         return self.journey

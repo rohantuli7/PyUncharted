@@ -4,41 +4,36 @@
     A class Museum is created which is used to depict a Museum with
     6 articles kept at the corners of the room. The player needs to
     select the correct articles with respect to the objective mentioned.
-    SciView required to complete this level.
 '''
 
-import copy
-from utils import Mapping
 import tkinter as tk
-from matplotlib.figure import Figure
-from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import matplotlib.pyplot as plt
-from PIL import Image
-from matplotlib import cm
-import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import time
-
 
 class Museum():
     def __init__(self, museumStartPoint, museumMap, museumDesc):
         """
             Initialises the Museum with respect to the parameters
             entered through the main play loop and a few other
-            essential parameters. This class inherits the Mapping
-            class and uses its functions for various tasks.
+            essential parameters.
         :param museumStartPoint: initial location of the player
         :param museumMap: map of the museum (matrix)
         :param museumDesc: color description of the map
         """
         # Articles placed in the museum and their description
 
+        # user journey for this class
         self.journey = ''
+
+        # creating tkinter GUI
         self.win = tk.Tk()
         self.win.title("Uncharted")
-        self.win.geometry("1500x1500")
+        self.win.geometry("1000x1000")
         self.win.resizable(False, False)
+
+        # Defining description of museum and items
         self.museumDesc = museumDesc
         self.articleAndDescription = {(0, 0) : {'book': "HIDDEN TREASURES"},
                                       (2, 0) : {'painting' : "PAINTING OF THE PYRAMID OF GIZA"},
@@ -63,6 +58,7 @@ class Museum():
         # Colormap used for depiction
         self.mapColors = 'jet'
 
+        # creating images using matplotlib to simulate traversal
         plt.imshow(self.map, cmap = "jet")
         plt.axis("off")
         plt.savefig("game_images/map1.png")
@@ -70,25 +66,26 @@ class Museum():
         self.imgLabel = tk.Label(self.win, image=self.img)
         self.imgLabel.grid(row = 2, column = 1, columnspan = 3)
 
-        #Calling the parent class constructor
+        # storing directions and respective weights
         self.directions = self.directions = {'north' : [-1, 0],
                                              'south' : [1, 0],
                                              'east' : [0, 1],
                                              'west' : [0, -1]}
 
 
-        self.location = tk.Label(self.win, text = "Chapter 1 (Location : Museum)",bg='black',fg='')
+        # initialising tkinter widgets
+        self.location = tk.Label(self.win, text = "Chapter 1 (Location : Museum)")
         self.objective = tk.Label(self.win, text="Objective: To find the map with the correct directions to the treasure and"
                                                             "the artifact which will be the solution to all your problems!")
         self.location.grid(row = 0, column = 2)
         self.objective.grid(row = 1, column = 2)
-        self.tkPath = tk.Label(self.win, text = f"Currently at position : {self.path}",fg='red')
+        self.tkPath = tk.Label(self.win, text = f"Currently at position : {self.path}")
         self.tkPath.grid(row = 3, column = 2)
         self.tkIncPath = tk.Label(self.win, text = f"")
         self.tkIncPath.grid(row = 4, column = 2)
         self.tkMuseumDesc = tk.Label(self.win, text = self.museumDesc)
         self.tkMuseumDesc.grid(row = 5, column = 1, columnspan = 3)
-        self.bagItems = tk.Label(self.win, text = "Items in the bag : "+str(self.bag),bg='black',fg='white')
+        self.bagItems = tk.Label(self.win, text = "Items in the bag : "+str(self.bag))
         self.bagItems.grid(row = 6, column = 2)
         self.direction_()
         self.tkArtName = tk.Label(self.win, text="")
@@ -99,15 +96,19 @@ class Museum():
         self.optionText.grid(rows = 10, column = 1, columnspan = 3)
         self.optionNote = tk.Label(text="")
         self.optionNote.grid(rows=11, column=1, columnspan = 3)
-        tk.Button(self.win, text="Quit", command=self.win.destroy, bg='#567', fg='White',relief="raised").grid(row = 0, column = 0)
-        self.yes = tk.Button(text="yes", command=self.addItem, bg='#567', fg='White',relief="raised")
+        tk.Button(self.win, text="Quit", command=self.win.destroy).grid(row = 0, column = 0)
+        self.yes = tk.Button(text="yes", command=self.addItem)
         self.win.mainloop()
 
     def direction_(self):
-        tk.Button(self.win,text='North',relief="raised", bg='#567', fg='White' ,command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["north"])], "north"), ).grid(row = 3, column = 6)
-        tk.Button(self.win, text = 'East',relief="raised", bg='#567', fg='White', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["east"])], "east")).grid(row = 4, column = 6)
-        tk.Button(self.win, text='South', relief="raised", bg='#567', fg='White',command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["south"])], "south")).grid(row = 5, column = 6)
-        tk.Button(self.win, text='West', relief="raised", bg='#567', fg='White',command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["west"])], "west")).grid(row = 6, column = 6)
+        """
+            Function linking direction buttons on screen to the traversal logic
+        :return: None
+        """
+        tk.Button(self.win,text='North', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["north"])], "north"), ).grid(row = 3, column = 6)
+        tk.Button(self.win, text = 'East', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["east"])], "east")).grid(row = 4, column = 6)
+        tk.Button(self.win, text='South', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["south"])], "south")).grid(row = 5, column = 6)
+        tk.Button(self.win, text='West', command = lambda : self.isPathExist([i+j for i, j in zip(self.path, self.directions["west"])], "west")).grid(row = 6, column = 6)
 
     def displayItemAndDesc(self, itemDict):
         """
@@ -134,6 +135,7 @@ class Museum():
         :param path_max: upper bound of the size of the map matrix
         :return:
         """
+        # updating the journey variable wrt the buttons clicked by the user
         self.journey = f"{self.journey}\n{journeyPath}"
         if (tempPath[0] < path_min or tempPath[0] > path_max) or (tempPath[1] < path_min or tempPath[1] > path_max):
             self.tkIncPath.configure(text="INCORRECT PATH ENTERED. RETRY!")
@@ -147,8 +149,17 @@ class Museum():
             return True
 
     def movingMuseum(self):
+        """
+            Displaying item and its description on the GUI
+        :return:
+        """
+        # Allowing user only to store 2 items at most
         if len(self.bag) != self.museumBagThresh:
+
+            # only if node isn't visited
             if self.map[self.path[0]][self.path[1]] == 1:
+
+                # displaying item and respective attributes on the GUI
                 itemDict = self.articleAndDescription[tuple(self.path)]
                 self.tkArtName.configure(text = f"Article Name : {list(itemDict.keys())[0]}")
                 self.tkArtDesc.configure(text = f"Article Description : {list(itemDict.values())[0]}")
@@ -159,24 +170,39 @@ class Museum():
                 plt.savefig("game_images/map.png")
                 self.img = tk.PhotoImage(file='game_images/map.png')
                 self.imgLabel.configure(image = self.img)
+
+                # making sure only 2 items are present in the bag
                 if len(self.bag) != self.museumBagThresh:
-                    self.yes = tk.Button(text = "yes", command = self.addItem,relief="raised", bg='#567', fg='White')
+                    self.yes = tk.Button(text = "yes", command = self.addItem)
                     self.yes.grid(rows = 12, column = 2)
+
+            # showing a yes button only on positions where items are present
             elif self.map[self.path[0]][self.path[1]] != 1:
                 if self.yes.winfo_exists() == 1:
                     self.yes.destroy()
 
+        # exiting the museum
         else:
-            tk.Label(text = "Exiting the museum! (in 3 seconds)",relief="raised",fg='red').grid(rows = 13, columns = 2)
+            tk.Label(text = "Exiting the museum! (in 3 seconds)").grid(rows = 13, columns = 2)
             self.win.destroy()
             self.win.mainloop()
 
     def addItem(self):
+        """
+            Function for adding item if the correct path is entered and item exists at current location
+        :return: None
+        """
+
+        # updating the journey
         self.journey = f"{self.journey}\nyes"
+
+        # Item added only if it is less than the threshold
         if len(self.bag) != self.museumBagThresh:
+            # avoiding repetitions of items
             if list(self.articleAndDescription[tuple(self.path)].keys())[0] in self.bag:
                 pass
             else:
+                # Inserting item in the bag
                 self.bag.append(list(self.articleAndDescription[tuple(self.path)].keys())[0])
                 self.bagItems.configure(text="Items in the bag : " + str(self.bag))
                 if len(self.bag) == 2:
@@ -184,10 +210,15 @@ class Museum():
                     self.win.destroy()
                     self.win.mainloop()
         else:
+            # exiting
             tk.Label(text = "Two items stolen! exiting the museum (in 3 seconds)!")
             time.sleep(3)
             self.win.destroy()
             self.win.mainloop()
 
     def returnJourney(self):
+        """
+            Function for returning the overall journey for this level
+        :return: user journey for this level
+        """
         return self.journey

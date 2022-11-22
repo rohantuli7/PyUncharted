@@ -1,11 +1,11 @@
-from room_1 import Museum
-from room_2 import Home
-from room_3 import Market
-from room_4 import JungleWithoutObstacles
-from room_5 import JungleExpedition
-from room_6 import Cave
-from room_7 import Pyramid1
-from room_8 import Pyramid2
+from Final.room_1 import Museum
+from Final.room_2 import Home
+from Final.room_3 import Market
+from Final.room_4 import JungleWithoutObstacles
+from Final.room_5 import JungleExpedition
+from Final.room_6 import Cave
+from Final.room_7 import Pyramid1
+from Final.room_8 import Pyramid2
 import copy
 import time
 import tkinter as tk
@@ -117,18 +117,23 @@ class Game():
         print(f"Items present in the bag after the {level} : {self.bag}")
 
     def tempWindow(self, txt, flag):
+        """
+            creation of GUI window
+        :param txt: text with which it needs to be updated
+        :param flag: condition
+        :return: None
+        """
         self.win = tk.Tk()
         self.win.title("Uncharted")
         self.win.geometry("800x180")
         self.win.resizable(False, False)
-        flash = 'red'
         if flag == 1:
-            tk.Label(self.win, text= txt, fg=flash).pack()
+            tk.Label(self.win, text= txt).pack()
         elif flag == 2:
-            tk.Label(self.win, text=txt[0], fg='green').pack()
-            tk.Label(self.win, text=txt[1], fg='green').pack()
+            tk.Label(self.win, text=txt[0]).pack()
+            tk.Label(self.win, text=txt[1]).pack()
 
-        tk.Button(self.win, text="Okay", command=self.win.destroy,relief="raised",bg='#567', fg='White').pack()
+        tk.Button(self.win, text="Okay", command=self.win.destroy).pack()
         self.win.mainloop()
 
     def play(self):
@@ -138,28 +143,33 @@ class Game():
         :return: None
         """
 
-        self.win = tk.Tk()  # Create a window
-        self.win.title("Uncharted")  # Set window title
-        self.win.geometry("500x180")  # Set window size
+        # creating tkinter GUI
+        self.win = tk.Tk()
+        self.win.title("Uncharted")
+        self.win.geometry("500x180")
         self.win.resizable(False, False)
 
-        tk.Label(self.win, text = f"Hi {self.name}\nWelcome to Uncharted!",bg='black',fg='white').grid(row = 1, column = 2)
+        # Welcome screen
+        tk.Label(self.win, text = f"Hi {self.name}\nWelcome to Uncharted!").grid(row = 1, column = 2)
         tk.Label(self.win, text = f"You have recently discovered that a certain tree sap can lead to invincibility!").grid(row = 2, column = 2)
         tk.Label(self.win, text = "The objective of this game is to find the invincibility tree by crossing all the levels!\n").grid(row = 3, column = 2)
-        tk.Button(self.win, text = "Okay", command = self.win.destroy,bg='#567', fg='White',relief="raised").grid(row = 4, column = 2)
+        tk.Button(self.win, text = "Okay", command = self.win.destroy).grid(row = 4, column = 2)
         self.journey = f"Okay"
         self.win.mainloop()
-        # ``````````````````````````````````````````````````````````````````````````````
+
         #Creating the level: Museum
         tempMuseumMap = copy.deepcopy(self.museumMap)
         tempMusemStartPoint = copy.deepcopy(self.museumStartPoint)
-        #
+
         # loop until correct items stolen from the museum
         while True:
+            # room 1 creation
             room1 = Museum(self.museumStartPoint, self.museumMap, self.museumDesc)
             museumBagAndDesc, bag = room1.getBag()
             journeyPath = room1.returnJourney()
             self.journey = f"{self.journey}{journeyPath}"
+
+            # only if correct items stolen, proceed ahead
             if set(bag) == set(self.museumItems):
                 self.bag = bag
                 self.museumBagAndDesc = museumBagAndDesc
@@ -173,13 +183,12 @@ class Game():
                 self.museumStartPoint = tempMuseumStartPoint1
         self.tempWindow(["Correct items stolen form the museum!", "Going back home......."], 2)
         self.journey = f"{self.journey}\nOkay"
-
         self.museumBagAndDesc, bag = room1.getBag()
+
+
         # Creating the level: Home
         #self.museumBagAndDesc = {'Map' : "ANCIENT MAP WITH THE A PATH LEADING TO SOME PLACE", 'Byzantine coin' : 'COIN WITH THE FOLLOWING WRITTEN "THE SOLUTION TO ALL PROBLEMS"'}
         #  Uncomment the above lines to check the below code individually
-
-        # ``````````````````````````````````````````````````````````````````````````````
         room2 = Home(self.museumBagAndDesc)
         self.tempWindow(["All items analysed! and destination found!", "Going to the market......."], 2)
         self.journey = f"{self.journey}\nOkay"
@@ -188,24 +197,24 @@ class Game():
 
 
         # Creating the level: Market
-        self.bag = ['Byzantine coin', 'Map']
-          # Uncomment the above lines to check the below code individually
-        print("Chapter 3 (Location : Market)")
-        # ``````````````````````````````````````````````````````````````````````````````
+        #self.bag = ['Byzantine coin', 'Map']
+        #   Uncomment the above lines to check the below code individually
+        #print("Chapter 3 (Location : Market)")
         self.bag = self.museumItems
         room3 = Market(self.bag)
         room3journey = room3.returnJourney()
         self.journey = f"{self.journey}{room3journey}"
         self.tempWindow(["All items bought! Going to the destination", f"Items in bag : {self.bag}"], 2)
         self.journey = f"{self.journey}\nOkay"
-        # ``````````````````````````````````````````````````````````````````````````````
-        # Creating the level: jungle without animals
+
+        #Creating the level: jungle without animals
         tempJungleObstacesMap = copy.deepcopy(self.jungleWithoutObstaclesMap)
         tempJungleWithoutObstaclesStartPoint = copy.deepcopy(self.jungleWithoutObstaclesStartPoint)
         while True:
             room4 = JungleWithoutObstacles(self.jungleWithoutObstaclesMap, self.jungleWithoutObstaclesStartPoint, self.jungleWithoutObstaclesMapDesc, "jet")
             room4journey = room4.returnJourney()
             self.journey = f"{self.journey}{room4journey}"
+            # only if correct items stolen, proceed ahead
             if room4.levelComplete:
                 break
             else:
@@ -217,25 +226,26 @@ class Game():
                 self.journey = f"{self.journey}\nOkay"
         self.tempWindow(["First part of the jungle crossed!", "Moving ahead......."], 2)
         self.journey = f"{self.journey}\nOkay"
+
         # Creating the level: jungle with animals
         #self.bag = ['Byzantine coin', 'Map', 'Boots', 'Windcheater', 'Knife', 'Pistol', 'Rope', 'Ladder']
         #self.bag = ['Byzantine coin', 'Map', 'Boots', 'Windcheater', 'Hunting rifle', 'Rope', 'Ladder']
         #  Uncomment the above lines to check the below code individually (uncomment only one at one time)
-        # ``````````````````````````````````````````````````````````````````````````````
         room5 = JungleExpedition(self.bag)
         self.bag = room5.getBag()
         room5journey = room5.returnJourney()
         self.journey = f"{self.journey}{room5journey}"
         self.tempWindow(["You have escaped the hyenas!", "Walking in the cave......."], 2)
         self.journey = f"{self.journey}\nOkay"
-        # ``````````````````````````````````````````````````````````````````````````````
-        # Creating the level: cave
+
+        #Creating the level: cave
         tempCaveMap = copy.deepcopy(self.jungleWithObstaclesMap)
         tempCaveStartPoint = copy.deepcopy(self.jungleWithObstaclesStartPoint)
         while True:
             room6 = Cave(self.jungleWithObstaclesMap, self.jungleWithObstaclesStartPoint, self.jungleWithObstaclesMapDesc, "hot")
             room6journey = room6.returnJourney()
             self.journey = f"{self.journey}{room6journey}"
+            # only if correct items stolen, proceed ahead
             if room6.levelComplete:
                 break
             else:
@@ -248,7 +258,7 @@ class Game():
         self.bag = ["byzantine coin", "map"]
         self.tempWindow(["After exiting the cave, you made your way towards the pyramid", f"The following items remain in the bag : {self.bag}"], 2)
         self.journey = f"{self.journey}\nOkay"
-        # ``````````````````````````````````````````````````````````````````````````````
+
         # Creating the level: pyramid
         self.bag = ["byzantine coin", "map"]
         #  Uncomment the above class to check the below code individually
@@ -260,6 +270,8 @@ class Game():
             room7journey = room7.returnJourney()
             self.journey = f"{self.journey}{room7journey}"
             bag = room7.getBag()
+
+            # only if correct items stolen, proceed ahead
             if set(bag) == set(self.pyramidItems):
                 self.bag = bag
                 break
@@ -277,16 +289,20 @@ class Game():
         self.bag.remove('sticks')
         self.bag.remove("stones")
         self.bag.remove("torch")
-        # Creating the level: inside the pyramid
-        self.bag = ["byzantine coin", "map"]
-        #  Uncomment the above class to check the below code
 
+        # Creating the level: inside the pyramid
+        #self.bag = ["byzantine coin", "map"]
+        #  Uncomment the above class to check the below code
         room8 = Pyramid2(self.pyramidRoom1Map, self.pyramidRoom1Start, self.pyramidRoom1Desc, self.bag)
         room8journey = room8.returnJourney()
+
+        # storing user journey in a .txt file
         self.journey = f'{self.journey}{room8journey}'
         text_file = open("userJourney.txt", "w")
         n = text_file.write(self.journey)
         text_file.close()
+
+        # on completion of the game
         return True
 
 def main():

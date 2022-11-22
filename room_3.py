@@ -6,13 +6,10 @@
     various probable obstacles during their expedition.
 
 """
-import time
+
 import tkinter as tk
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
-from PIL import Image, ImageTk
-import copy
 
 class Market:
     def __init__(self, bag):
@@ -22,33 +19,48 @@ class Market:
             has been passed as a parameter.
         :param bag: bag of items from the previous levels
         """
+        # initialising required variables
         self.journey = ''
         self.bag = bag
         self.items = []
         self.itemsSelected = {}
         self.money = 100
+
+        # conditions, items and their respective price
         self.CondItemsPrice = {'Mountainous region with heavy rain': {"Mountain climbing boots": 10, "Windcheater": 20, "Waterproof jacket": 20, "Swim wear": 90},
                                'Presence of wild animals in the jungle': {"Knife": 10, "Pistol (with 5 bullets)": 30, "Hunting rifle (with 6 bullets)": 40, "Assault rifle (with 50 bullets)": 100},
                                'Presence of rivers and unstable rope bridges': {"Rope": 10, "Ladder": 20, "Motorboat": 150, "Jet ski": 100}}
         self.conditions = list(self.CondItemsPrice.keys())
+
+        # creaion of tkinter GUI
         self.win = tk.Tk()
         self.win.title("Uncharted")
         self.win.geometry("1000x1000")
         self.win.resizable(False, False)
+
+        # function for simulation of the market
         self.conditionsAndGame()
+
         self.win.mainloop()
 
     def conditionsAndGame(self):
-        self.location = tk.Label(self.win, text="Chapter 3 (Location : Market)",bg='black',fg='white')
-        self.objective = tk.Label(self.win, text="Objective: With respect to each of the above conditions, you are required to procure items from the market.")
-        self.warning = tk.Label(self.win, text = f"NOTE: ONLY {self.money}$ have been allocated for this task.", fg='red')
-        self.condition1 = tk.Label(self.win, text = f"{self.conditions[0]}. (HINT: CHOOSE ONLY TWO ITEMS!)",bg='black',fg='white')
-        self.condition2 = tk.Label(self.win, text= f"{self.conditions[1]}. (HINT: CHOOSE ONE TO TWO ITEMS!)",bg='black',fg='white')
-        self.condition3 = tk.Label(self.win, text= f"{self.conditions[2]}. (HINT: CHOOSE ONLY TWO ITEMS!)",bg='black',fg='white')
-        self.tkmoney = tk.Label(self.win, text = f"Money available : {self.money}",bg='black',fg='red')
-        self.tkreset = tk.Label(self.win, text = "",fg='red')
+        """
+            Function which displays conditions, items and price of each item
+        :return:
+        """
 
-        tk.Button(self.win, text="Quit", command=self.win.destroy, bg='#567', fg='White').grid(row=0, column=0)
+        # location, objective and instructions along with other necessary widgets
+        self.location = tk.Label(self.win, text="Chapter 3 (Location : Market)")
+        self.objective = tk.Label(self.win, text="Objective: With respect to each of the above conditions, you are required to procure items from the market.")
+        self.warning = tk.Label(self.win, text = f"NOTE: ONLY {self.money}$ have been allocated for this task.")
+        self.condition1 = tk.Label(self.win, text = f"{self.conditions[0]}. (HINT: CHOOSE ONLY TWO ITEMS!)")
+        self.condition2 = tk.Label(self.win, text= f"{self.conditions[1]}. (HINT: CHOOSE ONE TO TWO ITEMS!)")
+        self.condition3 = tk.Label(self.win, text= f"{self.conditions[2]}. (HINT: CHOOSE ONLY TWO ITEMS!)")
+        self.tkmoney = tk.Label(self.win, text = f"Money available : {self.money}")
+        self.tkreset = tk.Label(self.win, text = "")
+
+        # Putting the widgets on the frame
+        tk.Button(self.win, text="Quit", command=self.win.destroy).grid(row=0, column=0)
         self.location.grid(row=0, column=2, columnspan=4)
         self.objective.grid(row=1, column=2, columnspan=4)
         self.warning.grid(row = 3, column = 2, columnspan = 4)
@@ -59,6 +71,7 @@ class Market:
         self.cond_item_price = {i: [f'{item} : {price}' for item, price in self.CondItemsPrice[self.conditions[i]].items()] for i, cond in enumerate(self.conditions)}
         self.condAndItem = {i: [f'{item}' for item, price in self.CondItemsPrice[self.conditions[i]].items()] for i, cond in enumerate(self.conditions)}
 
+        # Calcuation of amount with respect to the items for condition - 1
         self.condition1CheckButton1 = tk.IntVar()
         self.condition1CheckButton2 = tk.IntVar()
         self.condition1CheckButton3 = tk.IntVar()
@@ -85,7 +98,7 @@ class Market:
                               onvalue=-90,
                               offvalue=0)
 
-        condition1Button = tk.Button(text = "Confirm items", command = lambda : self.printAmount(0),bg='#567', fg='White')
+        condition1Button = tk.Button(text = "Confirm items", command = lambda : self.printAmount(0))
 
         c1_button1.grid(row = 5, column = 2, columnspan = 4)
         c1_button2.grid(row = 6, column = 2, columnspan = 4)
@@ -95,6 +108,8 @@ class Market:
         condition1Button.grid(row = 9, column = 2, columnspan = 4)
 
         self.condition2.grid(row=10, column=2, columnspan=4)
+
+        # Calcuation of amount with respect to the items for condition - 2
 
         self.condition2CheckButton1 = tk.IntVar()
         self.condition2CheckButton2 = tk.IntVar()
@@ -121,7 +136,7 @@ class Market:
                                     onvalue=-100,
                                     offvalue=0)
 
-        condition2Button = tk.Button(text="Confirm items", command=lambda : self.printAmount(1) ,bg='#567', fg='White')
+        condition2Button = tk.Button(text="Confirm items", command=lambda : self.printAmount(1))
 
         c1_button1.grid(row=11, column=2, columnspan=4)
         c1_button2.grid(row=12, column=2, columnspan=4)
@@ -131,6 +146,8 @@ class Market:
         condition2Button.grid(row=15, column=2, columnspan=4)
 
         self.condition3.grid(row=16, column=2, columnspan=4)
+
+        # Calcuation of amount with respect to the items for condition - 3
 
         self.condition3CheckButton1 = tk.IntVar()
         self.condition3CheckButton2 = tk.IntVar()
@@ -157,7 +174,7 @@ class Market:
                                     onvalue=-100,
                                     offvalue=0)
 
-        condition3Button = tk.Button(text="Confirm items", command=lambda : self.printAmount(2), bg='#567', fg='White')
+        condition3Button = tk.Button(text="Confirm items", command=lambda : self.printAmount(2))
 
         c1_button1.grid(row=18, column=2, columnspan=4)
         c1_button2.grid(row=19, column=2, columnspan=4)
@@ -167,13 +184,24 @@ class Market:
         condition3Button.grid(row=22, column=2, columnspan=4)
 
     def destroy_widgets(self):
+        """
+            Function to destroy all widget on the frame
+        :return: None
+        """
         for widgets in self.win.winfo_children():
             widgets.destroy()
 
 
     def printAmount(self, case):
+        """
+            calculation of the price of items on click of the button
+        :param case: items for the respective condition
+        :return: None
+        """
         self.tkreset.configure(text = "")
         self.journey = f"{self.journey}\nConfirm items"
+
+        # sum of items for condition 1
         if case == 0:
             self.money += self.condition1CheckButton1.get() + self.condition1CheckButton2.get() + self.condition1CheckButton3.get() + self.condition1CheckButton4.get()
             if self.condition1CheckButton1.get()!= 0:
@@ -188,6 +216,8 @@ class Market:
             if self.condition1CheckButton4.get()!= 0:
                 self.journey = f"{self.journey}\n{self.condAndItem[0][3]}"
                 self.bag.append(self.condAndItem[0][3])
+
+        # sum of items for condition 2
         elif case == 1:
             self.money += self.condition2CheckButton1.get() + self.condition2CheckButton2.get() + self.condition2CheckButton3.get() + self.condition2CheckButton4.get()
             if self.condition2CheckButton1.get()!= 0:
@@ -202,6 +232,8 @@ class Market:
             if self.condition2CheckButton4.get()!= 0:
                 self.bag.append(self.condAndItem[1][3])
                 self.journey = f"{self.journey}\n{self.condAndItem[1][3]}"
+
+        # sum of items for condition 3
         elif case == 2:
             self.money += self.condition3CheckButton1.get() + self.condition3CheckButton2.get() + self.condition3CheckButton3.get() + self.condition3CheckButton4.get()
             if self.condition3CheckButton1.get()!= 0:
@@ -217,6 +249,8 @@ class Market:
                 self.bag.append(self.condAndItem[2][3])
                 self.journey = f"{self.journey}\n{self.condAndItem[2][3]}"
         self.tkmoney.configure(text=f"Money available : {self.money}")
+
+        # if expenses exceed the allocated money, reset the money and retry
         if self.money < 0:
             self.money = 100
             self.bag = ["Byzantine Coin", "Map"]
@@ -230,4 +264,8 @@ class Market:
                 self.tkreset.configure(text = "Incorrect items! Resetting!")
 
     def returnJourney(self):
+        """
+            Returning the user journey for this level
+        :return: user journey for this level
+        """
         return self.journey
